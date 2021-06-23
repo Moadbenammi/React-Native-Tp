@@ -6,6 +6,9 @@
  * @flow strict-local
  */
 
+import 'react-native-gesture-handler';
+import { NavigationContainer } from '@react-navigation/native';
+import { createStackNavigator } from '@react-navigation/stack'; 
 import React, { Component } from 'react'; 
 import {
   StyleSheet,
@@ -13,10 +16,30 @@ import {
 } from 'react-native';
 
 
-export default class App extends Component<Props> 
+class PageDeRecherche extends Component<Props> 
 { 
  render() { 
-return React.createElement(Text, {style: styles.description}, "Rechercher des pays !");
+  return <Text style={styles.description}>Rechercher des pays du monde entier ! </Text>; 
+ } 
+}
+
+const Pile = createStackNavigator(); 
+function MaPile() { 
+ return ( 
+ <Pile.Navigator> 
+ <Pile.Screen name="Accueil" component={PageDeRecherche} /> 
+ </Pile.Navigator> 
+ ); 
+} 
+export default class App extends Component<Props> { 
+ 
+render() 
+ { 
+    return ( 
+      <NavigationContainer> 
+      <MaPile /> 
+      </NavigationContainer> 
+    ); 
  } 
 }
 

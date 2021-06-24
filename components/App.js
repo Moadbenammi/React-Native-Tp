@@ -10,7 +10,6 @@ import 'react-native-gesture-handler';
 import {NavigationContainer} from '@react-navigation/native';
 import {createStackNavigator} from '@react-navigation/stack';
 import React, {Component} from 'react';
-import {StyleSheet, Text} from 'react-native';
 import PageDeRecherche from './PageDeRecherche';
 
 const Pile = createStackNavigator();
@@ -31,12 +30,3 @@ export default class App extends Component<Props> {
     );
   }
 }
-
-const styles = StyleSheet.create({
-  description: {
-    fontSize: 18,
-    textAlign: 'center',
-    color: '#656565',
-    marginTop: 65,
-  },
-});

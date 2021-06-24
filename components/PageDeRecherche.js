@@ -25,6 +25,7 @@ export default class PageDeRecherche extends Component<Props> {
           />
           <Button onPress={() => {}} color="#48AAEC" title="Démarrer" />
         </View>
+        <Image source={require('../Ressources/pays.jpg')} style={styles.image}/> 
       </View>
     );
   }
@@ -58,4 +59,8 @@ const styles = StyleSheet.create({
     borderRadius: 8,
     color: '#48AAEC',
   },
+  image: { 
+    width: 220, 
+    height: 140, 
+   },
 });

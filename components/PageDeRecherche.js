@@ -9,24 +9,41 @@ import {
   Image,
 } from 'react-native';
 
-type Props = {};
+function urlPourRequete(valeur) { 
+  return 'https://restcountries.eu/rest/v2/name/' 
+   + valeur; 
+} 
 
+type Props = {};
 export default class PageDeRecherche extends Component<Props> {
   
   constructor(props) { 
     super(props); 
     this.state = { 
-    requeteDeRecherche: 'morocco' 
-   }; 
+      requeteDeRecherche: 'morocco', 
+      estEnChargement: false, 
+    };
   }
-  
+  _executerRequete = (requete) => { 
+    console.log(requete); 
+    this.setState({ estEnChargement: true }); 
+   }; 
+   _auDemarrageDeLaRecherche = () => { 
+    const requete = urlPourRequete(this.state.requeteDeRecherche); 
+    this._executerRequete(requete); 
+   }; 
+
   _auChangementDeLaRecherche = (event) => { 
     console.log('_auChangementDeLaRecherche'); 
     this.setState({ requeteDeRecherche: event.nativeEvent.text }); 
     console.log('Current: '+this.state.requeteDeRecherche , 'Next: ' +event.nativeEvent.text); 
   };
+
+  
   
   render() {
+    const indicateurDeChargement = this.state.estEnChargement ? 
+ <ActivityIndicator size='large' color='0000ff'/> : null; 
     return (
       <View style={styles.conteneur}>
         <Text style={styles.description}>Rechercher des pays à explorer !</Text>
@@ -39,9 +56,10 @@ export default class PageDeRecherche extends Component<Props> {
             onChange={this._auChangementDeLaRecherche} 
             placeholder='Rechercher par nom de pays'
           />
-          <Button onPress={() => {}} color="#48AAEC" title="Démarrer" />
+          <Button onPress = {this._auDemarrageDeLaRecherche}  color="#48AAEC" title="Démarrer" />
         </View>
         <Image source={require('../Ressources/pays.jpg')} style={styles.image}/> 
+        {indicateurDeChargement} 
       </View>
     );
   }

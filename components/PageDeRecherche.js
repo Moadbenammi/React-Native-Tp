@@ -9,41 +9,57 @@ import {
   Image,
 } from 'react-native';
 
-function urlPourRequete(valeur) { 
-  return 'https://restcountries.eu/rest/v2/name/' 
-   + valeur; 
-} 
+function urlPourRequete(valeur) {
+  return 'https://restcountries.eu/rest/v2/name/' + valeur;
+}
 
 type Props = {};
 export default class PageDeRecherche extends Component<Props> {
-  
-  constructor(props) { 
-    super(props); 
-    this.state = { 
-      requeteDeRecherche: 'morocco', 
-      estEnChargement: false, 
+  constructor(props) {
+    super(props);
+    this.state = {
+      requeteDeRecherche: 'morocco',
+      estEnChargement: false,
+      message: '',
     };
   }
-  _executerRequete = (requete) => { 
-    console.log(requete); 
-    this.setState({ estEnChargement: true }); 
-   }; 
-   _auDemarrageDeLaRecherche = () => { 
-    const requete = urlPourRequete(this.state.requeteDeRecherche); 
-    this._executerRequete(requete); 
-   }; 
 
-  _auChangementDeLaRecherche = (event) => { 
-    console.log('_auChangementDeLaRecherche'); 
-    this.setState({ requeteDeRecherche: event.nativeEvent.text }); 
-    console.log('Current: '+this.state.requeteDeRecherche , 'Next: ' +event.nativeEvent.text); 
+  _gererLaReponse = reponse => {
+    this.setState({estEnChargement: false, message: ''});
+    console.log('Nombre de pays trouvés :' + reponse.length);
   };
 
-  
-  
+  _executerRequete = requete => {
+    console.log(requete);
+    this.setState({estEnChargement: true});
+    fetch(requete)
+      .then(reponse => reponse.json())
+      .then(json => this._gererLaReponse(json))
+      .catch(error =>
+        this.setState({
+          estEnChargement: false,
+          message: "Quelque chose de mauvais s'est produit" + error,
+        }),
+      );
+  };
+  _auDemarrageDeLaRecherche = () => {
+    const requete = urlPourRequete(this.state.requeteDeRecherche);
+    this._executerRequete(requete);
+  };
+
+  _auChangementDeLaRecherche = event => {
+    console.log('_auChangementDeLaRecherche');
+    this.setState({requeteDeRecherche: event.nativeEvent.text});
+    console.log(
+      'Current: ' + this.state.requeteDeRecherche,
+      'Next: ' + event.nativeEvent.text,
+    );
+  };
+
   render() {
-    const indicateurDeChargement = this.state.estEnChargement ? 
- <ActivityIndicator size='large' color='0000ff'/> : null; 
+    const indicateurDeChargement = this.state.estEnChargement ? (
+      <ActivityIndicator size="large" color="0000ff" />
+    ) : null;
     return (
       <View style={styles.conteneur}>
         <Text style={styles.description}>Rechercher des pays à explorer !</Text>
@@ -51,15 +67,23 @@ export default class PageDeRecherche extends Component<Props> {
         <View style={styles.fluxDroite}>
           <TextInput
             underlineColorAndroid={'transparent'}
-            style={styles.requeteEntree} 
+            style={styles.requeteEntree}
             value={this.state.requeteDeRecherche}
-            onChange={this._auChangementDeLaRecherche} 
-            placeholder='Rechercher par nom de pays'
+            onChange={this._auChangementDeLaRecherche}
+            placeholder="Rechercher par nom de pays"
           />
-          <Button onPress = {this._auDemarrageDeLaRecherche}  color="#48AAEC" title="Démarrer" />
+          <Button
+            onPress={this._auDemarrageDeLaRecherche}
+            color="#48AAEC"
+            title="Démarrer"
+          />
         </View>
-        <Image source={require('../Ressources/pays.jpg')} style={styles.image}/> 
-        {indicateurDeChargement} 
+        <Image
+          source={require('../Ressources/pays.jpg')}
+          style={styles.image}
+        />
+        {indicateurDeChargement}
+        <Text style={styles.description}>{this.state.message}</Text>
       </View>
     );
   }
@@ -93,8 +117,8 @@ const styles = StyleSheet.create({
     borderRadius: 8,
     color: '#48AAEC',
   },
-  image: { 
-    width: 220, 
-    height: 140, 
-   },
+  image: {
+    width: 220,
+    height: 140,
+  },
 });

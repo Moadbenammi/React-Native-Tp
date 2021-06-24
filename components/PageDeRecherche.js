@@ -26,7 +26,7 @@ export default class PageDeRecherche extends Component<Props> {
 
   _gererLaReponse = reponse => {
     this.setState({estEnChargement: false, message: ''});
-    console.log('Nombre de pays trouvés :' + reponse.length);
+    this.props.navigation.navigate('Resultats', {listings: reponse}); 
   };
 
   _executerRequete = requete => {

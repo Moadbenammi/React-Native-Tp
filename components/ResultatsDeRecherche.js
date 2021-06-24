@@ -1,25 +1,18 @@
 import React, {Component} from 'react';
-import {
-  StyleSheet,
-  Image,
-  View,
-  TouchableHighlight,
-  FlatList,
-  Text,
-} from 'react-native';
+import {FlatList} from 'react-native';
+import {ListItem} from './ListItem';
 
-type Props = {}; 
-export default class ResultatsDeRecherche extends Component<Props> {
+
+export default class ResultatsDeRecherche extends Component {
   _extracteurClef = (item, index) => index.toString();
-  _rendreItem = ({item}) => {
-    return (
-      <TouchableHighlight underlayColor="#ddddda">
-        <View>
-          <Text>{item.name}</Text>
-        </View>
-      </TouchableHighlight>
-    );
+  _rendreItem = ({item, index}) => (
+    <ListItem item={item} index={index} onPressItem={this._itemAppuye} />
+  );
+
+  _itemAppuye = index => {
+    console.log('Ligne appuyée : ' + index);
   };
+
   render() {
     console.log(this.props.route.params);
     const {listings} = this.props.route.params;

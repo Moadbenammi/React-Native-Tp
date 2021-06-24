@@ -12,6 +12,20 @@ import {
 type Props = {};
 
 export default class PageDeRecherche extends Component<Props> {
+  
+  constructor(props) { 
+    super(props); 
+    this.state = { 
+    requeteDeRecherche: 'morocco' 
+   }; 
+  }
+  
+  _auChangementDeLaRecherche = (event) => { 
+    console.log('_auChangementDeLaRecherche'); 
+    this.setState({ requeteDeRecherche: event.nativeEvent.text }); 
+    console.log('Current: '+this.state.requeteDeRecherche , 'Next: ' +event.nativeEvent.text); 
+  };
+  
   render() {
     return (
       <View style={styles.conteneur}>
@@ -20,8 +34,10 @@ export default class PageDeRecherche extends Component<Props> {
         <View style={styles.fluxDroite}>
           <TextInput
             underlineColorAndroid={'transparent'}
-            style={styles.requeteEntree}
-            placeholder="Rechercher par nom de pays"
+            style={styles.requeteEntree} 
+            value={this.state.requeteDeRecherche}
+            onChange={this._auChangementDeLaRecherche} 
+            placeholder='Rechercher par nom de pays'
           />
           <Button onPress={() => {}} color="#48AAEC" title="Démarrer" />
         </View>
